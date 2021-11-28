@@ -7,8 +7,8 @@ from json import dump
 
 
 VIDEOS_DIR = "videos"
-DCT_COEFFICIENT_1 = 0, 0 # main coefficient
-DCT_COEFFICIENT_2 = 1, 1 # secondary coefficient
+DCT_COEFFICIENT_1 = 1, 1 # main coefficient
+DCT_COEFFICIENT_2 = 0, 0 # secondary coefficient
 
 
 if __name__ == "__main__":
@@ -37,6 +37,10 @@ if __name__ == "__main__":
     variation_totals = [0, 0, 0]
     variation_hists = [[0] * 2048, [0] * 2048, [0] * 2048]
     block_count = 0
+
+    # correlation logging variables
+    function_of_dct_2_hists = [[0] * 2048, [0] * 2048, [0] * 2048]
+    counts = [[0] * 2048, [0] * 2048, [0] * 2048]
 
     # iterate over video frames
     for frame_i in range(n):
@@ -92,7 +96,18 @@ if __name__ == "__main__":
                 variation_hists[i][variation] += 1
             block_count += 1
 
+            # update correlation logging variables
+            for dct_blocks in dct_coefficients:
+                for channel_index, channel_block in enumerate(dct_blocks):
+                    function_of_dct_2_hists[channel_index][channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]] += channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
+                    counts[channel_index][channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]] += 1
+
         print(f"Progress {frame_i / n * 100:.2f}%")
+
+    values = [[], [], []]
+    for i in range(3):
+        for x, y in zip(function_of_dct_2_hists[i], counts[i]):
+            values[i].append(x / y if x else 0)
 
     with open("stats.json", "w") as output_file:
         dump({
@@ -100,5 +115,6 @@ if __name__ == "__main__":
             "highest_variation": highest_variation,
             "variation_totals": variation_totals,
             "variation_hists": variation_hists,
-            "block_count": block_count
+            "block_count": block_count,
+            "function_of_dct_2_hists": values
         }, output_file)
