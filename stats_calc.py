@@ -39,8 +39,7 @@ if __name__ == "__main__":
     block_count = 0
 
     # correlation logging variables
-    function_of_dct_2_hists = [[0] * 2048, [0] * 2048, [0] * 2048]
-    counts = [[0] * 2048, [0] * 2048, [0] * 2048]
+    correlation_heatmap = [[[0] * 2048 for _j in range(2048)] for _i in range(3)]
 
     # iterate over video frames
     for frame_i in range(n):
@@ -76,13 +75,13 @@ if __name__ == "__main__":
 
             # calculate variation of DCT_COEFFICIENT_1 in current block
             variations = [
-                max(
+                abs(max(
                     dct_coefficients,
                     key=lambda x: x[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
                 )[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]] - min(
                     dct_coefficients,
                     key=lambda x: x[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
-                )[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]][0]
+                )[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]][0])
                 for channel_index in range(3)
             ]
 
@@ -99,15 +98,9 @@ if __name__ == "__main__":
             # update correlation logging variables
             for dct_blocks in dct_coefficients:
                 for channel_index, channel_block in enumerate(dct_blocks):
-                    function_of_dct_2_hists[channel_index][channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]] += channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
-                    counts[channel_index][channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]] += 1
-
+                    correlation_heatmap[channel_index][1024 - channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]][1024 - channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]] += 1
         print(f"Progress {frame_i / n * 100:.2f}%")
 
-    values = [[], [], []]
-    for i in range(3):
-        for x, y in zip(function_of_dct_2_hists[i], counts[i]):
-            values[i].append(x / y if x else 0)
 
     with open("stats.json", "w") as output_file:
         dump({
@@ -116,5 +109,5 @@ if __name__ == "__main__":
             "variation_totals": variation_totals,
             "variation_hists": variation_hists,
             "block_count": block_count,
-            "function_of_dct_2_hists": values
+            "function_of_dct_2_hists": correlation_heatmap
         }, output_file)
