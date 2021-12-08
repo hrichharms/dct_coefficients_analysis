@@ -17,9 +17,14 @@ from sys import argv
 
 if __name__ == "__main__":
 
+    # parse command line arguments
     videos_dir = argv[1]
     dct_coefficient_1 = int(argv[2]), int(argv[3])
     dct_coefficient_2 = int(argv[4]), int(argv[5])
+
+    # calculate "zero offset" for both dct coefficients
+    zero_offset_dct_1 = 0 if dct_coefficient_1 == (0, 0) else 1024
+    zero_offset_dct_2 = 0 if dct_coefficient_2 == (0, 0) else 1024
 
     # open video capture objects
     videos = [VideoCapture(join(videos_dir, filename)) for filename in listdir(videos_dir) if filename != ".DS_Store"]
@@ -112,7 +117,7 @@ if __name__ == "__main__":
                 for dct_blocks in dct_coefficients:
                     for channel_index, channel_block in enumerate(dct_blocks):
 
-                        correlation_heatmap[channel_index][1024 + channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]][1024 + channel_block[dct_coefficient_2[0]][dct_coefficient_2[1]]] += 1
+                        correlation_heatmap[channel_index][zero_offset_dct_1 + channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]][zero_offset_dct_2 + channel_block[dct_coefficient_2[0]][dct_coefficient_2[1]]] += 1
 
                         if channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]] < lowest:
                             lowest = channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]
