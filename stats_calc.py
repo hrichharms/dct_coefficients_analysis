@@ -18,16 +18,33 @@ from sys import argv
 if __name__ == "__main__":
 
     # parse command line arguments
-    videos_dir = argv[1]
-    dct_coefficient_1 = int(argv[2]), int(argv[3])
-    dct_coefficient_2 = int(argv[4]), int(argv[5])
+    try:
+        videos_dir = argv[1]
+        dct_coefficient_1 = int(argv[2]), int(argv[3])
+        dct_coefficient_2 = int(argv[4]), int(argv[5])
+        if [i for i in dct_coefficient_1 + dct_coefficient_2 if not 0 <= i <= 7]:
+            print("Invalid dct coefficient indexes. Must be integers in range [0, 7]")
+            exit()
+    except IndexError:
+        print("ERROR: Invalid number of arguments! Five arguments needed.")
+        exit()
+    except ValueError:
+        print("ERROR: Invalid arguments!")
+        exit()
 
     # calculate "zero offset" for both dct coefficients
     zero_offset_dct_1 = 0 if dct_coefficient_1 == (0, 0) else 1024
     zero_offset_dct_2 = 0 if dct_coefficient_2 == (0, 0) else 1024
 
     # open video capture objects
-    videos = [VideoCapture(join(videos_dir, filename)) for filename in listdir(videos_dir) if filename != ".DS_Store"]
+    try:
+        videos = [VideoCapture(join(videos_dir, filename)) for filename in listdir(videos_dir) if filename != ".DS_Store"]
+    except FileNotFoundError:
+        print("ERROR: Non-existant videos directory provided!")
+        exit()
+    if [video for video in videos if not video.isOpened()]:
+        print("ERROR: Videos directory contains un-openable video file(s)!")
+        exit()
 
     # check if all videos have same frame count
     n = int(videos[0].get(CAP_PROP_FRAME_COUNT))
