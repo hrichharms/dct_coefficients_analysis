@@ -12,17 +12,17 @@ from itertools import product
 from os.path import join
 from os import listdir
 from json import dump
-
-
-VIDEOS_DIR = "videos"
-DCT_COEFFICIENT_1 = 2, 2 # primary coefficient
-DCT_COEFFICIENT_2 = 1, 1 # secondary coefficient
+from sys import argv
 
 
 if __name__ == "__main__":
 
+    videos_dir = argv[1]
+    dct_coefficient_1 = int(argv[2]), int(argv[3])
+    dct_coefficient_2 = int(argv[4]), int(argv[5])
+
     # open video capture objects
-    videos = [VideoCapture(join(VIDEOS_DIR, filename)) for filename in listdir(VIDEOS_DIR) if filename != ".DS_Store"]
+    videos = [VideoCapture(join(videos_dir, filename)) for filename in listdir(videos_dir) if filename != ".DS_Store"]
 
     # check if all videos have same frame count
     n = int(videos[0].get(CAP_PROP_FRAME_COUNT))
@@ -90,11 +90,11 @@ if __name__ == "__main__":
                 variations = [
                     abs(max(
                         dct_coefficients,
-                        key=lambda x: x[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
-                    )[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]] - min(
+                        key=lambda x: x[channel_index][dct_coefficient_1[0]][dct_coefficient_1[1]]
+                    )[channel_index][dct_coefficient_1[0]][dct_coefficient_1[1]] - min(
                         dct_coefficients,
-                        key=lambda x: x[channel_index][DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
-                    )[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]][0])
+                        key=lambda x: x[channel_index][dct_coefficient_1[0]][dct_coefficient_1[1]]
+                    )[dct_coefficient_1[0]][dct_coefficient_1[1]][0])
                     for channel_index in range(3)
                 ]
 
@@ -112,19 +112,20 @@ if __name__ == "__main__":
                 for dct_blocks in dct_coefficients:
                     for channel_index, channel_block in enumerate(dct_blocks):
 
-                        correlation_heatmap[channel_index][1024 - channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]][channel_block[DCT_COEFFICIENT_2[0]][DCT_COEFFICIENT_2[1]]] += 1
+                        correlation_heatmap[channel_index][1024 + channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]][1024 + channel_block[dct_coefficient_2[0]][dct_coefficient_2[1]]] += 1
 
-                        if channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]] < lowest:
-                            lowest = channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
-                        if channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]] > highest:
-                            highest = channel_block[DCT_COEFFICIENT_1[0]][DCT_COEFFICIENT_1[1]]
+                        if channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]] < lowest:
+                            lowest = channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]
+                        if channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]] > highest:
+                            highest = channel_block[dct_coefficient_1[0]][dct_coefficient_1[1]]
 
             print(f"Progress {frame_i / n * 100:.2f}%")
 
         except KeyboardInterrupt:
             break
 
-    with open("stats_2_2_1_1_small.json", "w") as output_file:
+    coefficients_signature = f"{dct_coefficient_1[0]}_{dct_coefficient_1[1]}_{dct_coefficient_2[0]}_{dct_coefficient_2[1]}"
+    with open(f"stats/stats_{coefficients_signature}_{videos_dir}.json", "w") as output_file:
         dump({
             "lowest_variation": lowest_variation,
             "highest_variation": highest_variation,
