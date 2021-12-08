@@ -124,7 +124,7 @@ if __name__ == "__main__":
         except KeyboardInterrupt:
             break
 
-    coefficients_signature = f"{dct_coefficient_1[0]}_{dct_coefficient_1[1]}_{dct_coefficient_2[0]}_{dct_coefficient_2[1]}"
+    coefficients_signature = "_".join([str(i) for i in dct_coefficient_1 + dct_coefficient_2])
     with open(f"stats/stats_{coefficients_signature}_{videos_dir}.json", "w") as output_file:
         dump({
             "lowest_variation": lowest_variation,
