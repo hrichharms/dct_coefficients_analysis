@@ -8,7 +8,9 @@ The purpose of this repository is to explore both the relationships between disc
 
 In `stats`, there are a number of ready-to-go output files. Further, the visualizations yielded by `visualize.py` with `stats/stats_2_2_0_0_large.json` can be found saved in png format in `figures` and are featured in this README. The calculated statistical information found in `stats` was derived from two base videos. 
 
-Filenames ending in \_small are derived from 3 minutes and 52 seconds of video downloaded from YouTube across h.264, h.265, mpeg4, and vp9 codecs with varrying compression settings. By contrast, filenames ending in \_large are derived from 1 hour, 37 minutes, and 20 seconds of video downloaded from YouTube in h.264, h.265, mpeg4, and vp9 codecs with the default compression settings of ffmpeg used for all except for the h.264 encoded video, which (to the best of my knowledge) is compressed with the settings used by YouTube.
+Filenames ending in \_small are derived from 3 minutes and 52 seconds of video downloaded from YouTube across h.264, h.265, mpeg4, and vp9 codecs with varrying compression settings.
+
+Filenames ending in \_large, on the other hand are derived from 1 hour, 37 minutes, and 20 seconds of video downloaded from YouTube in h.264, h.265, mpeg4, and vp9 codecs with the default compression settings of ffmpeg used for all except for the h.264 encoded video, which (to the best of my knowledge) is compressed with the settings used by YouTube.
 
 ## Processing
 
