@@ -1,6 +1,6 @@
 # dct_coefficients_analysis
 
-The purpose of this repository is to explore both the relationships between discrete cosine transform (DCT) coefficients as well as the varition in DCT coefficients across popular video codecs with a focus on improving and optimizing DCT-based steganographic systems. The primary focus of this repository is on variation histograms and correlation heatmaps (explained below).
+The purpose of this repository is to explore both the relationships between discrete cosine transform (DCT) coefficients as well as the variation in DCT coefficients across popular video codecs with a focus on improving and optimizing DCT-based steganographic systems. The primary focus of this repository is on variation histograms and correlation heatmaps (explained below).
 
 **Note: In order to remain consistent with OpenCV, color channels are discussed with the BGR ordering rather than RGB unless otherwise stated.**
 
