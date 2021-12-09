@@ -51,7 +51,11 @@ python3 visualize.py <json_filename>
 
 For the purpose of this analysis, the variation of a DCT coefficient for a given block of a video frame is defined as the absolute value of the difference between the smallest and largest value for that coefficient in that block across all analyzed video codecs. For example, if the analyzed DCT coefficient in a given block is observed to have values of 155, 240, 155, and 167 across each analyzed codec respectively, the variation is calculated as abs(155 - 167) = 12.
 
-Variation histograms plot the variation of the primary DCT coefficient on the horizontal axis with the observed frequency of that variation on the vertical axis. It is important to note that `visualize.py` does not plot the entire variation histogram, rather it cuts the plot off at 100 on the horizontal axis and displays what percentage of the overall variation count the displayed graph represents in the top right corner of the plot. Below are example figures that can be found in the figures directory. These histograms were derived from `stats/stats_2_2_0_0_large.json` and as such, display the variation histograms of the DCT coefficient (2, 2) in the blue, green, and red color channels respectively.
+Variation histograms plot the variation of the primary DCT coefficient on the horizontal axis with the observed frequency of that variation on the vertical axis.
+
+It is important to note that `visualize.py` does not plot the entire variation histogram, rather it cuts the plot off at 100 on the horizontal axis and displays what percentage of the overall variation count the displayed graph represents in the top right corner of the plot.
+
+Below are example figures that can be found in the figures directory. These histograms were derived from `stats/stats_2_2_0_0_large.json` and as such, display the variation histograms of the DCT coefficient (2, 2) in the blue, green, and red color channels respectively.
 
 <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/first100variationhist_b_2_2_0_0_large.png?raw=true" alt="Blue Variation Histogram" width="300"/> <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/first100variationhist_g_2_2_0_0_large.png?raw=true" alt="Green Variation Histogram" width="300"/> <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/first100variationhist_r_2_2_0_0_large.png?raw=true" alt="Red Variation Histogram" width="300"/>
 
