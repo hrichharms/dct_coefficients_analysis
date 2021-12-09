@@ -18,6 +18,7 @@ if __name__ == "__main__":
         correlation_threshold = int(correlation_threshold)
     except ValueError:
         print("ERROR: Too few or too many command line arguments!")
+        exit()
 
     # load data from stats json file
     with open(stats_filename) as stats_file:
