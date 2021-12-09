@@ -18,11 +18,11 @@ if __name__ == "__main__":
         plot_color = [0, 0, 0]; plot_color[color_index] = 1; plot_color.reverse()
         fig1 = pyplot.figure(f"{argv[1]} Variation Histogram ({color_name})", facecolor="0.15")
         ax = fig1.add_subplot(111, facecolor="0.175")
-        ax.tick_params(labelcolor="tab:orange")
-        ax.set_xlabel("Variation", color="tab:orange")
-        ax.set_ylabel("Frequency", color="tab:orange")
+        ax.tick_params(labelcolor="#AAAAAA")
+        ax.set_xlabel("Variation", color="#AAAAAA")
+        ax.set_ylabel("Frequency", color="#AAAAAA")
         ax.bar(range(100), hist[:100], color=plot_color)
-        ax.annotate(f"{sum(hist[:100]) / sum(hist) * 100:.2f}%", (0.88, 0.95), xycoords="axes fraction", color="tab:orange")
+        ax.annotate(f"{sum(hist[:100]) / sum(hist) * 100:.2f}%", (0.88, 0.95), xycoords="axes fraction", color="#AAAAAA")
 
     # heatmap figures for each color channel
     cmaps = ["mako", "crest_r", "rocket"]
