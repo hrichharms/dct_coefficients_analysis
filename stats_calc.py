@@ -64,7 +64,6 @@ if __name__ == "__main__":
     # variation logging variables
     lowest_variation = [0, 0, 0]
     highest_variation = [0, 0, 0]
-    variation_totals = [0, 0, 0]
     variation_hists = [[0] * 2048, [0] * 2048, [0] * 2048]
     block_count = 0
 
@@ -126,7 +125,6 @@ if __name__ == "__main__":
                         lowest_variation[i] = variation
                     if variation > highest_variation[i]:
                         highest_variation[i] = variation
-                    variation_totals[i] += variation
                     variation_hists[i][variation] += 1
                 block_count += 1
 
@@ -151,7 +149,6 @@ if __name__ == "__main__":
         dump({
             "lowest_variation": lowest_variation,
             "highest_variation": highest_variation,
-            "variation_totals": variation_totals,
             "variation_hists": variation_hists,
             "lowest_val": lowest,
             "highest_val": highest,
