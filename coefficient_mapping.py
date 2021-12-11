@@ -41,6 +41,7 @@ if __name__ == "__main__":
     #   Note: this description can probably be worded better with respect to the relationship between
     #         coefficient_mappings[i][j] and acceptable_error
     C = coefficient_stats["function_of_dct_2_hists"]
+    natural_bounds = [[0] * 2048, [0] * 2048, [0] * 2048]
     coefficient_mappings = [[0] * 2048, [0] * 2048, [0] * 2048] # one mapping array per channel
     for i, mapping in enumerate(coefficient_mappings): # calculate channel mapping for each channel
 
@@ -65,10 +66,15 @@ if __name__ == "__main__":
             #   Note: right now the mapping output is calculated "safely" by using the bound with the
             #         highest magnitude. There are non-zero perceptibility gains to be made by calculating
             #         mapping outputs for both the lower and upper bounds individually.
-            mapping[j] = max(abs(1024 - natural_lower), abs(1024 - natural_upper)) + embeding_differences[i]
+            natural_bound = max(abs(1024 - natural_lower), abs(1024 - natural_upper))
+            mapping[j] = natural_bound + embeding_differences[i]
             if natural_lower == -1 and natural_upper == -1: # if natural bounds could not be found
                 mapping[j] = -1
+            natural_bounds[i][j] = natural_bound
 
     # write calculated mappings to output file
     with open(output_filename, "w") as output_file:
-        dump(coefficient_mappings, output_file)
+        dump({
+            "natural_bounds": natural_bounds,
+            "coefficient_mappings": coefficient_mappings
+        }, output_file)
