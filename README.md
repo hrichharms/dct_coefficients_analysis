@@ -65,21 +65,6 @@ Correlation heatmaps aim to visualize the relationship between the primary DCT c
 
 <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/heatmap_b_2_2_0_0_large.png?raw=true" alt="Blue Correlation Heatmap" width="300"/> <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/heatmap_g_2_2_0_0_large.png?raw=true" alt="Green Correlation Heatmap" width="300"/> <img src="https://github.com/hrichharms/dct_coefficients_analysis/blob/main/figures/heatmap_r_2_2_0_0_large.png?raw=true" alt="Red Correlation Heatmap" width="300"/>
 
-## Application
-
-In order to apply the calculated statistics to optimizing DCT steganography, this repository contains a third script: `coefficient_mapping.py`. This script combines the variation histograms and correlation heatmaps calculated by `stats_calc.py` to attempt to create an optimal mapping between secondary DCT coefficient values and primary coefficient values for data embeding.
-
-The usage for `coefficient_mapping.py` is as follows:
-
-```
-python3 coefficient_mapping.py <stats_filename> <acceptable_error_rate> <natural_occurence_threshold> <output_filename>
-```
-
-- stats_filename : str : filename of stats file from `stats_calc.py`
-- acceptable_error_rate : float in the interval [0, 1] : error rate for the program to aim for in the resultant coefficient mappings
-- natural_occurence_threshold : int : used to derive lower and upper bounds on "naturally occuring" combinations in the correlation heatmaps
-- output_filename : str : filename for output of coefficient maps in json format
-
 ## Possible Improvements
 - At the moment, the optimization system works on the assumption that DCT coefficient variation is largely independent of the coefficient's general value. This doesn't seem likely to be true and I have yet to measure how much of an impact this has on the accuracy of the optimizations attempted by `coefficient_mapping.py`.
 - It would be nice to be able to have a higher-level version of `coefficient_mapping.py` where the coefficient mappings can be automatically calculated for a desired error rate assuming the use of a Reed-Solomon error correction code.
