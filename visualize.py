@@ -1,6 +1,5 @@
 from matplotlib import pyplot, pylab
-from numpy.core.numeric import outer
-from seaborn import heatmap, dark_palette
+from seaborn import heatmap
 
 from json import load
 from sys import argv
